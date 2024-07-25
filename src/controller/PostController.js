@@ -1,4 +1,5 @@
 import pool from "../bd/Pool.js";
+import { validateRole } from "./UserController.js";
 
 
 const index = async (req, res) => {
@@ -53,7 +54,7 @@ const show = async (req, res) => {
 const store = async (req, res) => {
   // #swagger.tags = ['Posts']
 
-  const required = ["user_id", "email", "password", "role"];
+  const required = ["user_id", "title", "content"];
 
   try {
     const { body } = req;
@@ -66,13 +67,12 @@ const store = async (req, res) => {
       };
     }
     const sql =
-      "INSERT INTO users (username, email, password, role) VALUES (?,?,?,?)";
+      "INSERT INTO posts (user_id, title, content) VALUES (?,?,?)";
 
     await pool.execute(sql, [
-      body.username,
-      body.email,
-      body.password,
-      body.role,
+      body.user_id,
+      body.title,
+      body.content
     ]);
 
     res.status(201).json({ message: "User created successfylly" });
@@ -87,19 +87,20 @@ const update = async (req, res) => {
   try {
     const { body, headers, params } = req;
 
+    
     if (!headers.user_id) {
       throw { message: "user_id en los encabezados es necesario", status: 400 };
     }
 
-    if (!params.id || !body.role) {
-      throw { message: "user_id y role son necesarios", status: 400 };
+    if (!params.id ) {
+      throw { message: "post_id, es necesario", status: 400 };
     }
     await validateRole(headers.user_id, params.id);
 
-    const sql = "UPDATE users SET role = ? WHERE user_id = ?";
+    const sql = "UPDATE posts SET title = ?, content = ? WHERE post_id = ? AND user_id = ?";
 
-    await pool.execute(sql, [body.role, params.id]);
-    res.status(201).json({ message: " Role updated successfully" });
+    await pool.execute(sql, [body.title, body.content, params.id, headers.user_id]);
+    res.status(201).json({ message: " title or/end content updated successfully" });
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
   }

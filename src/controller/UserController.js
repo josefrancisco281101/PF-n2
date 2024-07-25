@@ -1,6 +1,6 @@
 import pool from "../bd/Pool.js"
 
-const validateRole = async (requestingUserId, targetUserId = null) => {
+export const validateRole = async (requestingUserId, targetUserId = null) => {
   const userSql = "SELECT role FROM users WHERE user_id = ?";
 
   const [rs] = await pool.execute(userSql, [requestingUserId]);
@@ -86,15 +86,15 @@ const update = async (req, res) => {
     }
 
 
-    if (!params.id || !body.role) {
+    if (!params.id || !body.role ) {
        throw { message: "user_id y role son necesarios", status: 400 };
     }
      await validateRole(headers.user_id, params.id)
 
-    const sql = "UPDATE users SET role = ? WHERE user_id = ?"
+    const sql = "UPDATE users SET username = ?, email = ?, password = ?, role = ? WHERE user_id = ?"
 
-    await pool.execute(sql, [body.role ,params.id])
-    res.status(201).json({ message: " Role updated successfully" });
+    await pool.execute(sql, [body.username, body.email, body.password ,body.role ,params.id])
+    res.status(201).json({ message: " username, email, password y/o Role updated successfully" });
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
   }

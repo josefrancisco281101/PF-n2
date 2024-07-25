@@ -154,6 +154,15 @@
               "schema": {
                 "type": "object",
                 "properties": {
+                  "username": {
+                    "example": "any"
+                  },
+                  "email": {
+                    "example": "any"
+                  },
+                  "password": {
+                    "example": "any"
+                  },
                   "role": {
                     "example": "any"
                   }
@@ -245,16 +254,13 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "username": {
+                  "user_id": {
                     "example": "any"
                   },
-                  "email": {
+                  "title": {
                     "example": "any"
                   },
-                  "password": {
-                    "example": "any"
-                  },
-                  "role": {
+                  "content": {
                     "example": "any"
                   }
                 }
@@ -328,7 +334,10 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "role": {
+                  "title": {
+                    "example": "any"
+                  },
+                  "content": {
                     "example": "any"
                   }
                 }
