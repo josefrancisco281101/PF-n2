@@ -203,8 +203,15 @@
         "description": "",
         "parameters": [
           {
-            "name": "user_id",
-            "in": "header",
+            "name": "title",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category_id",
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -271,18 +278,14 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "user_id",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"
