@@ -10,21 +10,25 @@ const index = async (req, res) => {
       const titleSql = "SELECT * FROM posts WHERE title LIKE ?";
       const [titles] = await pool.execute(titleSql, [`%${query.title}%`]);
       if (titles.length === 0) {
-        return res.status(404).json({ message: 'No se encontró ningún post con ese título' });
+        return res
+          .status(404)
+          .json({ message: "No se encontró ningún post con ese título" });
       }
 
-        return res.status(200).json(titles);
+      return res.status(200).json(titles);
     }
 
     if (query.category_id) {
       const titleSql = "SELECT * FROM categories WHERE category_id = ?";
       const [categories] = await pool.execute(titleSql, [query.category_id]);
-       
+
       if (categories.length === 0) {
-         return res.status(404).json({ message: 'No se encontró ninguna categoría con ese ID' });
+        return res
+          .status(404)
+          .json({ message: "No se encontró ninguna categoría con ese ID" });
       }
 
-     return res.status(200).json(categories);
+      return res.status(200).json(categories);
     }
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
@@ -56,7 +60,7 @@ const store = async (req, res) => {
   const required = ["user_id", "title", "content"];
 
   try {
-    const { body} = req;
+    const { body } = req;
     const validate = required.filter((field) => !(field in body));
 
     if (validate.length !== 0) {
@@ -80,7 +84,7 @@ const update = async (req, res) => {
 
   try {
     const { body, headers, params } = req;
-    
+
     if (!headers.user_id) {
       throw { message: "user_id en los encabezados es necesario", status: 400 };
     }

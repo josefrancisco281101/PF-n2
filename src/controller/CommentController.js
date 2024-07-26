@@ -6,17 +6,17 @@ const index = async (req, res) => {
   try {
     const { headers, query } = req;
 
-   
-
     if (query.post_id) {
       const postSql = "SELECT * FROM comments WHERE post_id = ?";
       const [comments] = await pool.execute(postSql, [query.post_id]);
-       
+
       if (comments.length === 0) {
-         return res.status(404).json({ message: 'No se encontró ninguncomentario con ese ID' });
+        return res
+          .status(404)
+          .json({ message: "No se encontró ninguncomentario con ese ID" });
       }
 
-     return res.status(200).json(comments);
+      return res.status(200).json(comments);
     }
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
@@ -48,7 +48,7 @@ const store = async (req, res) => {
   const required = ["user_id", "post_id", "content"];
 
   try {
-    const { body} = req;
+    const { body } = req;
     const validate = required.filter((field) => !(field in body));
 
     if (validate.length !== 0) {
@@ -57,7 +57,8 @@ const store = async (req, res) => {
         status: 400,
       };
     }
-    const sql = "INSERT INTO comments (user_id, post_id, content) VALUES (?,?,?)";
+    const sql =
+      "INSERT INTO comments (user_id, post_id, content) VALUES (?,?,?)";
 
     await pool.execute(sql, [body.user_id, body.post_id, body.content]);
 
@@ -72,7 +73,7 @@ const update = async (req, res) => {
 
   try {
     const { body, headers, params } = req;
-    
+
     if (!headers.user_id) {
       throw { message: "user_id en los encabezados es necesario", status: 400 };
     }
