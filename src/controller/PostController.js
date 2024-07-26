@@ -56,7 +56,7 @@ const store = async (req, res) => {
   const required = ["user_id", "title", "content"];
 
   try {
-    const { body } = req;
+    const { body} = req;
     const validate = required.filter((field) => !(field in body));
 
     if (validate.length !== 0) {
@@ -69,7 +69,7 @@ const store = async (req, res) => {
 
     await pool.execute(sql, [body.user_id, body.title, body.content]);
 
-    res.status(201).json({ message: "User created successfylly" });
+    res.status(201).json({ message: "Post created successfylly" });
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
   }
@@ -80,7 +80,7 @@ const update = async (req, res) => {
 
   try {
     const { body, headers, params } = req;
-
+    
     if (!headers.user_id) {
       throw { message: "user_id en los encabezados es necesario", status: 400 };
     }
