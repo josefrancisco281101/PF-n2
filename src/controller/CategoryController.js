@@ -81,9 +81,7 @@ const update = async (req, res) => {
   
   try {
     const { body, headers, params } = req
-     console.log(body)
-     console.log(headers)
-    console.log(params)
+   
     
 
      if (!headers.user_id) {
@@ -115,11 +113,11 @@ const destroy = async (req, res) => {
 
    await validateRole(headers.user_id, params.id)
    
-    const sql = "DELETE FROM  users WHERE user_id = ? ";
+    const sql = "DELETE FROM  categories WHERE category_id = ? ";
 
     await pool.execute(sql, [ params.id]);
 
-    res.status(201).json({ message: " User deleted successfully" });
+    res.status(201).json({ message: " category deleted successfully" });
   } catch (error) {
     res.status(error.status || 500).json({ error: error.message });
   }
